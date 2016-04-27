@@ -1,7 +1,11 @@
 package com.veinhorn.example
 
-object Main extends App {
+import com.veinhorn.example.dao.UserDAO
 
+object Main extends App {
+  HibernateHolder.init()
+
+  val users = new UserDAO().getAll
 
   println("hi")
 }
