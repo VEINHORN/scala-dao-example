@@ -1,27 +1,26 @@
 package com.veinhorn.example.dao
 
-import com.veinhorn.example.HibernateHolder
+import com.mysql.cj.api.Session
 import com.veinhorn.example.entities.User
-import scala.collection.JavaConverters._
+
+
 
 /**
   * Created by veinhorn on 27.4.16.
   */
-class UserDAO extends DAO[User] {
+class UserDAO extends DAOExecutor with DAO[User] {
 
-
-  override def getAll: Option[Seq[User]] = HibernateHolder.getSessionFactory match {
-    case Some(sessionFactory) =>
-      val session = sessionFactory.openSession()
-      val users = toScalaSeq(session.createCriteria(new User().getClass).list())
-      session.close()
-      Some(users)
-    case None =>
-      None
+  override def getAll(): Option[Seq[User]] = {
+    executeWithSession[Seq[User]] { session =>
+      val users = session.createCriteria(classOf[User]).list()
+      Some(toScalaSeq(users))
+    }
   }
 
-  private def toScalaSeq(list: java.util.List[_]): Seq[User] = {
-    list.asScala.asInstanceOf[Seq[User]]
+  override def create(user: User): Option[User] = {
+    executeWithTransaction[User] { session =>
+      session.save(user)
+      Some(user)
+    }
   }
-
 }
