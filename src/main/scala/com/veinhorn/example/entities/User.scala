@@ -13,6 +13,11 @@ import org.hibernate.annotations.GenericGenerator
 @Table(schema = "example-db", name = "User")
 class User {
 
+  def this(id: Int) = {
+    this()
+    idUser = id
+  }
+
   @Id
   @GenericGenerator(name = "gen", strategy = "increment")
   @GeneratedValue(generator = "gen")

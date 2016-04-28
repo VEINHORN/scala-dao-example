@@ -15,5 +15,6 @@
         <property name="show_sql">true</property>
 
         <mapping class="com.veinhorn.example.entities.User" />
+        <mapping class="com.veinhorn.example.entities.Order" />
     </session-factory>
 </hibernate-configuration>

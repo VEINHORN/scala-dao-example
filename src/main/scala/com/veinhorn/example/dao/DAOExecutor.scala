@@ -20,7 +20,7 @@ class DAOExecutor[E] {
         func(sessionFactory)
       } catch {
         case e: Exception =>
-          println("Some exception")
+          e.printStackTrace()
           None
       }
     case None =>
